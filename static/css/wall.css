@@ -219,7 +219,18 @@
   background:#269d9d;
 }
 
+/******** POST ****************/
 
+#post{
+  display: block;
+  width: 100px;
+  margin-top: 20px;
+  margin-bottom: 100px;
+  border-radius: 20px;
+  padding: 10px;
+
+
+}
 
 /********* TIMELINE *****************/
 
