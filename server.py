@@ -4,8 +4,8 @@ from flask_bcrypt import Bcrypt
 import re
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
-mysql = MySQLConnector(app,'users')
-app.secret_key = "1hk34987"
+mysql = MySQLConnector(app,'wall')
+app.secret_key = "13k34987"
 
 def get_user(email):
     user_query = "SELECT * FROM users WHERE email = :email LIMIT 1"
@@ -45,7 +45,7 @@ def create():
     elif not password == confirm:
         flash('Password and Confirmation must match')
         return redirect('/')
-    else: 
+    else:
         #create user
 
         pw_hash = bcrypt.generate_password_hash(password)
