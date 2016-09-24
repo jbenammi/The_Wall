@@ -19,15 +19,24 @@
                 </div>
                 <div class="collapse navbar-collapse" id="navcol-1">
                     <ul class="nav navbar-nav"></ul>
-                    <p class="navbar-text navbar-right actions"> <a class="btn btn-default action-button" role="button" href="#">Login</a></p>
+                    <p class="navbar-text navbar-right actions"> <a class="btn btn-default action-button" role="button" href="/login">Login</a></p>
                 </div>
             </div>
         </nav>
     </div>
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages %}
+                <p> {{ message }}</p>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
     <div class="register-photo">
         <div class="form-container">
             <div class="image-holder"></div>
-            <form method="post">
+            <form action="/create_user" method="post">
                 <h2 class="text-center"><strong>Create</strong> an account.</h2>
                 <div class="form-group">
                     <input class="form-control" type="text" name="first_name" placeholder="Name">
@@ -42,7 +51,7 @@
                     <input class="form-control" type="password" name="password" placeholder="Password">
                 </div>
                 <div class="form-group">
-                    <input class="form-control" type="password" name="password-repeat" placeholder="Password (repeat)">
+                    <input class="form-control" type="password" name="password_confirm" placeholder="Password (repeat)">
                 </div>
                 <div class="form-group">
                     <div class="checkbox">
