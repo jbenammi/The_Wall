@@ -2,144 +2,138 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>wall</title>
-    <link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../static/fonts/ionicons.min.css">
-    <link rel="stylesheet" href="../static/css/wall.css">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>The Dojo Coders Wall</title>
+	<link rel="stylesheet" href="../static/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="../static/fonts/ionicons.min.css">
+	<link rel="stylesheet" href="../static/css/wall.css">
 </head>
 
 <body>
-    <div>
-        <nav class="navbar navbar-default navigation-clean-button">
-            <div class="container">
-                <div class="navbar-header"><a class="navbar-brand navbar-link" href="#">DOJO WALL OF FAME</a>
-                    <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
-                </div>
-                <div class="collapse navbar-collapse" id="navcol-1">
-                    <ul class="nav navbar-nav"></ul>
-                    <p class="navbar-text navbar-right actions"><a class="navbar-link login" href="#">Welcome, Nicholis!</a><a name='logout' class="btn btn-default action-button" role="button" href="/logout">Logout </a></p>
-                </div>
-            </div>
-        </nav>
-    </div>
-    <div id="buffer" style="height:50px;"></div>
-    <div class="container">
-	<div class="row">
-		<form action="/wall" method="POST">
-		<div class="form-group">
-  			<label for="comment"></label>
-  			<textarea class="form-control" type='text' name='message'rows="5" id="message"></textarea>
-			<button id='message' class="btn btn-success " name='message 'type="submit">Post</button>
-		</div>
-		</form>
-	<div class="timeline-centered">
-
-	<article class="timeline-entry">
-
-		<div class="timeline-entry-inner">
-			<time class="timeline-time" datetime="2014-01-10T03:45"><span>03:45 AM</span> <span>Today</span></time>
-
-			<div class="timeline-icon bg-success">
-				<i class="entypo-feather"></i>
+	<div>
+		<nav class="navbar navbar-default navigation-clean-button">
+			<div class="container">
+				<div class="navbar-header"><a class="navbar-brand navbar-link" href="#">THE DOJO CODERS WALL</a>
+					<button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+				</div>
+				<div class="collapse navbar-collapse" id="navcol-1">
+					<ul class="nav navbar-nav"></ul>
+					<p class="navbar-text navbar-right actions">Welcome, {{current_name}} ! &nbsp &nbsp
+						<a name='logout' class="btn btn-default action-button" role="button" href="/logout">Logout </a>
+					</p>
+				</div>
 			</div>
-
-			<div class="timeline-label">
-				<h2><a href="#">Art Ramadani</a> <span>posted a status update</span></h2>
-				<p>Tolerably earnestly middleton extremely distrusts she boy now not. Add and offered prepare how cordial two promise. Greatly who affixed suppose but enquire compact prepare all put. Added forth chief trees but rooms think may.</p>
-			</div>
-		</div>
-
-	</article>
-
-
-	<article class="timeline-entry left-aligned">
-
-		<div class="timeline-entry-inner">
-			<time class="timeline-time" datetime="2014-01-10T03:45"><span>03:45 AM</span> <span>Today</span></time>
-
-			<div class="timeline-icon bg-secondary">
-				<i class="entypo-suitcase"></i>
-			</div>
-
-			<div class="timeline-label">
-				<h2><a href="#">Job Meeting</a></h2>
-				<p>You have a meeting at <strong>Laborator Office</strong> Today.</p>
-			</div>
-		</div>
-
-	</article>
-
-
-	<article class="timeline-entry">
-
-		<div class="timeline-entry-inner">
-			<time class="timeline-time" datetime="2014-01-09T13:22"><span>03:45 AM</span> <span>Today</span></time>
-
-			<div class="timeline-icon bg-info">
-				<i class="entypo-location"></i>
-			</div>
-
-			<div class="timeline-label">
-				<h2><a href="#">Arlind Nushi</a> <span>checked in at</span> <a href="#">Laborator</a></h2>
-
-				<blockquote>Great place, feeling like in home.</blockquote>
-			</div>
-		</div>
-
-	</article>
-
-
-	<article class="timeline-entry left-aligned">
-
-		<div class="timeline-entry-inner">
-			<time class="timeline-time" datetime="2014-01-10T03:45"><span>03:45 AM</span> <span>Today</span></time>
-
-			<div class="timeline-icon bg-warning">
-				<i class="entypo-camera"></i>
-			</div>
-
-			<div class="timeline-label">
-				<h2><a href="#">Arber Nushi</a> <span>changed his</span> <a href="#">Profile Picture</a></h2>
-
-				<blockquote>Pianoforte principles our unaffected not for astonished travelling are particular.</blockquote>
-
-				<img src="http://themes.laborator.co/neon/assets/images/timeline-image-3.png" class="img-responsive img-rounded full-width">
-			</div>
-		</div>
-
-	</article>
-
-
-	<article class="timeline-entry begin">
-
-		<div class="timeline-entry-inner">
-
-			<div class="timeline-icon" style="-webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg);">
-				<i class="entypo-flight"></i>
-			</div>
-
-		</div>
-
-	</article>
-
-</div>
+		</nav>
 	</div>
-</div>
-    <div class="footer-clean">
-        <footer>
-            <div class="container">
-                <div class="row">
-                    <div class="col-md-3 item social"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-github"></i></a>
-                        <p class="copyright">Nicholis Muller © 2016</p>
-                    </div>
-                </div>
-            </div>
-        </footer>
-    </div>
-    <script src="../static/js/jquery.min.js"></script>
-    <script src="../static/bootstrap/js/bootstrap.min.js"></script>
+
+	<div id="buffer" style="height:50px;"></div>
+	<div class="container">
+		{% with messages = get_flashed_messages() %} {% if messages %} {% for message in messages %}
+		<p id='container-flash'> {{ message }}</p>
+		{% endfor %} {% endif %} {% endwith %}
+		<div class="row">
+			<form id='post-box' action="/wall" method="POST">
+				<div class="form-group">
+					<label for="message"></label>
+					<textarea id='post-text'class="form-control" type='text' name='message' rows="5"></textarea>
+					<button id='message' class="btn btn-success " name='message ' type="submit">Post</button>
+				</div>
+			</form>
+
+
+
+			{% for message in all_messages %}
+
+			<div class="timeline-centered">
+				<article class="timeline-entry">
+					<div class="timeline-entry-inner">
+						<time class="timeline-time"><span>{{message['created_at'].strftime('%Y-%m-%d')}}</span> <span>{{message['created_at'].strftime('%H:%M:%S')}}</span></time>
+
+						<div class="timeline-icon bg-success">
+							<i class="entypo-feather"></i>
+						</div>
+
+						<div class="timeline-label">
+							<form action="/wall" method="POST">
+								<label for="delete-message">
+									<h2 id='main-name'>{{message['first_name']}} {{message['last_name']}}<span class='posted-text'> posted a status update</span></h2>
+								</label>
+							<input type="hidden" name='delete-message'>
+							<input type='hidden' name='message_id' value={{message['message_id']}}>
+							<button type"submit" value='delete-message' id='delete-message'>X</button>
+						</form> </p>
+
+							<p id='main-message'>{{message['message']}}</p><br><br>
+							<h2>Comments</h2>
+							<div id="comment-wrapper">
+									<form action="/wall" method="POST">
+										<label for="delete-comment">
+											{%for comment in all_comments%}
+											{%if message['message_id'] == comment['message_id']%}
+											<p id='comment-header'>{{comment['first_name']}} wrote  <span class='posted-text'>on {{comment['created_at'].strftime('%D @ %H:%M')}}</span>
+
+										</label>
+									<input type="hidden" name='delete-comment'>
+									<button type"submit" value='delete-comment' id='delete-comment'>X</button>
+								</form> </p>
+								<p id='comment-text'>{{comment['comment']}}</p>
+								<div id="comment-spacer">
+									<hr>
+								</div>
+								{%endif%}
+
+								{%endfor%}
+
+							</div>
+
+
+							<form action="/wall" method="POST">
+								<div class="form-group">
+									<label for="comments"></label>
+									<input type="hidden" name='message_id' value={{message['message_id']}}>
+									<textarea class="form-control" type='text' name='comment' rows="5"></textarea>
+									<button id='comment' class="btn btn-success " name='comment ' type="submit">comment</button>
+								</div>
+							</form>
+						</div>
+					</div>
+
+				</article>
+			</div>
+			{% endfor %}
+
+
+
+			<div>
+				<article class="timeline-entry begin">
+
+					<div class="timeline-entry-inner">
+
+						<div class="timeline-icon" style="-webkit-transform: rotate(-90deg); -moz-transform: rotate(-90deg);">
+							<i class="entypo-flight"></i>
+						</div>
+
+					</div>
+
+				</article>
+
+			</div>
+
+			<div class="footer-clean">
+				<footer>
+					<div class="container">
+						<div class="row">
+							<div class="col-md-3 item social"><a href="#"><i class="icon ion-social-facebook"></i></a><a href="#"><i class="icon ion-social-twitter"></i></a><a href="#"><i class="icon ion-social-github"></i></a>
+								<p class="copyright">Nicholis Muller © 2016</p>
+							</div>
+						</div>
+					</div>
+				</footer>
+			</div>
+			<script src="../static/js/jquery.min.js"></script>
+			<script src="../static/bootstrap/js/bootstrap.min.js"></script>
+			<script src="../static/js/scripts.js"></script>
 </body>
 
 </html>

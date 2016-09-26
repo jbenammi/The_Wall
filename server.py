@@ -7,12 +7,27 @@ bcrypt = Bcrypt(app)
 mysql = MySQLConnector(app,'wall')
 app.secret_key = "13k378987"
 
+
 def get_user(email):
     user_query = "SELECT * FROM users WHERE email = :email LIMIT 1"
     query_data = { 'email': email }
     user = mysql.query_db(user_query, query_data)
     return user
 
+def get_messages():
+    user_query = "SELECT users.id, users.first_name, users.last_name, messages.message, messages.id as message_id, messages.created_at FROM  users JOIN messages ON users.id = messages.user_id ORDER BY created_at DESC"
+
+    messages = mysql.query_db(user_query)
+    return messages
+
+def get_comments():
+    user_query = "Select users.first_name, comments.comment, comments.created_at, comments.message_id from comments JOIN users ON comments.user_id = users.id ORDER BY created_at DESC "
+
+    comments = mysql.query_db(user_query)
+    return comments
+
+def get_stats():
+    return stats
 
 @app.route('/', methods=['GET'])
 def index():
@@ -21,18 +36,88 @@ def index():
 @app.route('/wall', methods=['GET', 'POST'])
 def wall():
     if request.method == 'GET':
-        return render_template('wall.html')
+
+        #get current user dictionary
+        current_user = get_user(session['email'])
+
+        #get basic scrubbed info of user
+        name = current_user[0]['first_name']
+
+        #get all messages
+        messages = get_messages()
+
+        #get all comments
+        comments = get_comments()
+
+
+        return render_template('wall.html', current_name = name, all_messages = messages, all_comments = comments)
 
     elif request.method == 'POST':
-        message = request.form['message']
-        print "hit post on wall"
-        print message
+        print ("/wall method post")
 
-        insert_query = "INSERT INTO messages (user_id, message, created_at) VALUES (:user_id, :message, NOW())"
-        query_data = {'user_id' : session['id'], 'message': message }
-        mysql.query_db(insert_query, query_data)
 
-        return render_template('wall.html')
+        if 'message' in request.form:
+            print ("/wall method post message")
+            #get message from view
+            message = request.form['message']
+
+            #insert message intp db
+            insert_query = "INSERT INTO messages (user_id, message, created_at) VALUES (:user_id, :message, NOW())"
+            query_data = {'user_id' : session['id'], 'message': message }
+            mysql.query_db(insert_query, query_data)
+
+            #get current user dictionary
+            current_user = get_user(session['email'])
+
+            #get basic scrubbed info of user
+            name = current_user[0]['first_name']
+
+            #get all messages
+            messages = get_messages()
+            print messages
+
+            return redirect('/wall')
+
+        elif 'comment' in request.form:
+            print ("/wall method post comment")
+
+            #get comment from view
+            comment = request.form['comment']
+            message_id = request.form['message_id']
+
+            #insert comment intp db
+            insert_query = "INSERT INTO comments(comment, created_at, updated_at, message_id, user_id) VALUES (:comment, NOW(), NOW(), (SELECT id FROM messages WHERE id = :message_id), :user_id)"
+
+            query_data = {'comment': comment, 'message_id' : message_id, 'user_id' : session['id'] }
+            mysql.query_db(insert_query, query_data)
+
+
+            return redirect('/wall')
+
+        elif 'delete-message' in request.form:
+            print "delete-message hit"
+            message_id = request.form['message_id']
+            print message_id
+
+            #get message details from db
+            insert_query =  "select users.id as user_id, messages.id as message_id, messages.created_at FROM users JOIN messages ON users.id = messages.user_id WHERE messages.id = :message_id"
+
+            query_data = {'message_id': message_id}
+
+            message_info = mysql.query_db(insert_query, query_data)
+
+            #run validation and delete
+            if message_info[0]['user_id'] != session['id']:
+                flash("Sorry, you can only delete your own posts!")
+            else:
+                insert_query =  "DELETE FROM messages WHERE id = :message_id"
+
+                query_data = {'message_id': message_id}
+
+                mysql.query_db(insert_query, query_data)
+
+            return redirect('/wall')
+
 
 @app.route('/create_user', methods=['POST'])
 def create():
@@ -60,6 +145,7 @@ def create():
     user = get_user(email)
     session['id'] = user[0]['id']
     session['name'] = user[0]['first_name']
+    session['email'] = user[0]['email']
 
     return redirect('/wall')
 
@@ -71,12 +157,14 @@ def login():
         password = request.form['password']
         user = get_user(email)
         if len(user) != 0 and bcrypt.check_password_hash(user[0]['pw_hash'], password):
+            print user
             session['id'] = user[0]['id']
             session['name'] = user[0]['first_name']
+            session['email'] = user[0]['email']
             return redirect('/wall')
         else:
             flash("Please try again")
-            return redirect('/')
+            return redirect('/login')
     elif request.method == 'GET':
         return render_template('login.html')
 
@@ -88,6 +176,7 @@ def logout():
     if  'id' in session:
         session.pop('id')
         session.pop('name')
+        session.pop('email')
         print session
         return redirect('/')
     else:

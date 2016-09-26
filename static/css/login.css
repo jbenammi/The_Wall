@@ -222,6 +222,18 @@
 
 
 /********* LOGIN *****************/
+#error {
+height: 20px;
+margin: 0 0 10px 0;
+padding: 0;
+}
+
+#login-error {
+  text-align: center;
+  font-weight: 100;
+  padding: 0;
+  color: lightgrey;
+}
 
 .login-clean {
   background:#f1f7fc;
@@ -296,7 +308,7 @@
 /********* FOOTER *****************/
 
 .footer-clean {
-  padding:50px 0;
+
   background-color:#fff;
   color:#4b4c4d;
 }
