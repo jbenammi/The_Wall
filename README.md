@@ -1,4 +1,4 @@
-This was made during a code assignment from Coding Dojo by myself in 24 hours.
+This was made during a code assignment from Coding Dojo by myself in 24 hours with 12 hours of coding/styling.
 The wall is a posting/commenting platform that was built with Flask, SQL and Python. The main functionality is as follows:
 
 •	User has the ability to register account. 
