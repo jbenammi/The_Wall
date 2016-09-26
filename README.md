@@ -2,7 +2,7 @@ This was made during a code assignment from Coding Dojo by myself in 24 hours wi
 The wall is a posting/commenting platform that was built with Flask, SQL and Python. The main functionality is as follows:
 
 •	User has the ability to register account. 
-•	SQL Bcrypt used for password encryption. 
+•	Bcrypt used for password encryption. 
 •	User have the ability to log in / logout. 
 •	User can post a own messages on the wall with a timestamp. 
 •	User cannot delete other users posts. 
