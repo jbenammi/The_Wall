@@ -1,5 +1,6 @@
 from flask import Flask, request, redirect, render_template, session, flash
 from mysqlconnection import MySQLConnector
+from datetime import datetime, timedelta
 from flask_bcrypt import Bcrypt
 import re
 app = Flask(__name__)
@@ -21,7 +22,7 @@ def get_messages():
     return messages
 
 def get_comments():
-    user_query = "Select users.first_name, comments.comment, comments.created_at, comments.message_id from comments JOIN users ON comments.user_id = users.id ORDER BY created_at DESC "
+    user_query = "Select comments.id as comment_id, users.first_name, comments.comment, comments.created_at, comments.message_id from comments JOIN users ON comments.user_id = users.id ORDER BY created_at DESC "
 
     comments = mysql.query_db(user_query)
     return comments
@@ -94,30 +95,58 @@ def wall():
 
             return redirect('/wall')
 
+        #Delete messages which is also cascaded to comments
         elif 'delete-message' in request.form:
             print "delete-message hit"
             message_id = request.form['message_id']
-            print message_id
 
             #get message details from db
             insert_query =  "select users.id as user_id, messages.id as message_id, messages.created_at FROM users JOIN messages ON users.id = messages.user_id WHERE messages.id = :message_id"
-
             query_data = {'message_id': message_id}
-
             message_info = mysql.query_db(insert_query, query_data)
+
+            #time logic
+            then = datetime.now() - timedelta(hours = int(message_info[0]['created_at'].strftime('%H')))
+            now = datetime.now()
 
             #run validation and delete
             if message_info[0]['user_id'] != session['id']:
                 flash("Sorry, you can only delete your own posts!")
-            else:
+
+            elif message_info[0]['user_id'] == session['id']:
                 insert_query =  "DELETE FROM messages WHERE id = :message_id"
-
                 query_data = {'message_id': message_id}
-
                 mysql.query_db(insert_query, query_data)
+
+                flash("The post have been deleted!")
+
+            elif (now - then) > timedelta(hours > .5):
+                 flash("Sorry, you post is more than 30 minutes old")
 
             return redirect('/wall')
 
+        #Delete comment and not the messages
+        elif 'delete-comment' in request.form:
+            comment_id = request.form['comment_id']
+
+            #select comment from id out of db
+            insert_query = "SELECT comments.id AS comments_id, user_id FROM comments WHERE comments.id = :comments_id"
+            query_data = {'comments_id': comment_id}
+            comments_check = mysql.query_db(insert_query, query_data)
+
+
+            #comment deleting logic if user is owner of comment
+            if comments_check[0]['user_id']!= session['id']:
+                flash("Sorry, you can only delete your own comments!")
+                return redirect('/wall')
+
+            else:
+                insert_query =  "DELETE FROM comments WHERE id = :comment_id"
+                query_data = {'comment_id': comment_id}
+                mysql.query_db(insert_query, query_data)
+
+                flash("The comment was deleted!")
+                return redirect('/wall')
 
 @app.route('/create_user', methods=['POST'])
 def create():
@@ -156,15 +185,18 @@ def login():
         email = request.form['email']
         password = request.form['password']
         user = get_user(email)
+
         if len(user) != 0 and bcrypt.check_password_hash(user[0]['pw_hash'], password):
             print user
             session['id'] = user[0]['id']
             session['name'] = user[0]['first_name']
             session['email'] = user[0]['email']
             return redirect('/wall')
+
         else:
             flash("Please try again")
             return redirect('/login')
+
     elif request.method == 'GET':
         return render_template('login.html')
 
@@ -179,6 +211,7 @@ def logout():
         session.pop('email')
         print session
         return redirect('/')
+
     else:
         flash("Already logged out")
         return redirect('/')
